@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clean Workspace') {
             steps {
-                bat 'rmdir /s /q sasegriddockerproj1 || exit 0'  // Windows command to remove the existing folder
+                bat 'rmdir /s /q sasegriddockerproj1 || exit 0'
             }
         }
 
@@ -31,7 +31,7 @@ pipeline {
         stage('Publish Test Results') {
             steps {
                 junit '**/target/surefire-reports/*.xml'
-                publishTestNGResults testResultsPattern: '**/target/surefire-reports/testng-results.xml'
+                step([$class: 'Publisher', reportFilenamePattern: '**/target/surefire-reports/testng-results.xml'])
             }
         }
 
