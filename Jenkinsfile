@@ -28,13 +28,6 @@ pipeline {
             }
         }
 
-        stage('Publish Test Results') {
-            steps {
-                junit '**/target/surefire-reports/*.xml'
-                step([$class: 'Publisher', reportFilenamePattern: '**/target/surefire-reports/testng-results.xml'])
-            }
-        }
-
         stage('Stop Selenium Grid') {
             steps {
                 bat 'docker-compose down'
