@@ -2,6 +2,12 @@ pipeline {
     agent any
 
     stages {
+        stage('Clean Workspace') {
+            steps {
+                bat 'rmdir /s /q sasegriddockerproj1 || exit 0'  // Windows command to remove the existing folder
+            }
+        }
+
         stage('Clone Repository') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
