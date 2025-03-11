@@ -1,0 +1,23 @@
+# Ignore Eclipse and Maven-specific files
+.classpath
+.project
+.settings/
+.m2/
+
+# IDE Specific
+*.iml
+.idea/
+*.class
+
+# Maven specific
+target/
+test-output/
+
+
+# Logs and Temp Files
+*.log
+*.tmp
+
+# OS Specific
+.DS_Store
+Thumbs.db
