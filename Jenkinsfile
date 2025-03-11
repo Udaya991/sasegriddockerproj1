@@ -2,31 +2,34 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout Code') {
+        stage('Clone Repository') {
             steps {
-                git 'https://github.com/your-username/amazon-automation.git'
+                withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                    sh 'git clone https://$GIT_USER:$GIT_PASS@github.com/Udaya991/sasegriddockerproj1.git'
+                }
             }
         }
 
-        stage('Start Docker Selenium Grid') {
+        stage('Start Selenium Grid') {
             steps {
                 sh 'docker-compose up -d'
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Maven Tests') {
             steps {
-                sh 'mvn test'
+                sh 'mvn clean test -DsuiteXmlFile=testng.xml'
             }
         }
 
-        stage('Print Test Results') {
+        stage('Publish Test Results') {
             steps {
-                sh 'cat target/surefire-reports/*.txt'
+                junit '**/target/surefire-reports/*.xml'
+                publishTestNGResults testResultsPattern: '**/target/surefire-reports/testng-results.xml'
             }
         }
 
-        stage('Stop Docker Grid') {
+        stage('Stop Selenium Grid') {
             steps {
                 sh 'docker-compose down'
             }
